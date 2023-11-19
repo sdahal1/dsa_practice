@@ -48,5 +48,67 @@ var maxProfit = function(prices) {
     return maxProfit;
 };
 
-console.log(maxProfit([23, 30, 7, 18, 4, 14, 2, 12, 9, 16, 3, 11, 20, 8, -5, 8, 19, 1, 18, 6, 17, 13, 15]))
-console.log(maxProfit([2,1,4]))
+// console.log(maxProfit([23, 30, 7, 18, 4, 14, 2, 12, 9, 16, 3, 11, 20, 8, -5, 8, 19, 1, 18, 6, 17, 13, 15]))
+// console.log(maxProfit([2,1,4]))
+/* 
+
+mp = 5
+lowestPriceSoFar = 1
+[7,1,5,3,6,4]
+   i
+           j
+
+
+mp = 7
+lowestPriceSoFar = 23
+
+[23, 30, 7, 18, 4, 14, 2, 12, 9, 16, 3, 11, 20, 8, -5, 8, 19, 1, 18, 6, 17, 13, 15] 
+ l  
+         r
+
+*/
+function maxProfit2(prices=[]){
+    if(prices.length === 0) return 0;
+    let maxProfit = 0;
+    let lowestPriceSoFar = prices[0];
+    let i = 0;
+    let j = 1;
+    while(j<prices.length){
+        const buyPrice = prices[i];
+        const sellPrice = prices[j];
+        const profit = sellPrice - buyPrice;
+        if(profit > maxProfit){
+            maxProfit = profit;
+            j++;
+        }else{
+            if(sellPrice < lowestPriceSoFar){
+                lowestPriceSoFar = sellPrice;
+                i = j;
+                j = i+1;
+            }else{
+                j++;
+            }
+        }
+        
+        
+    }
+    return maxProfit
+}
+
+function maxProfitNeetCode(prices=[]){
+    let [l,r] = [0,1];
+    let maxProfit = 0;
+    while(r<prices.length){
+        if(prices[l] < prices[r]){
+            profit = prices[r] - prices[l];
+            maxProfit = Math.max(profit, maxProfit);
+        }else{
+            l = r;
+        }
+        r++;
+    }
+    return maxProfit
+}
+
+console.log(maxProfitNeetCode([7,1,5,3,6,4]))
+console.log(maxProfitNeetCode([23, 30, 7, 18, 4, 14, 2, 12, 9, 16, 3, 11, 20, 8, -5, 8, 19, 1, 18, 6, 17, 13, 15]))
